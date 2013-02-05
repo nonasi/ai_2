@@ -60,20 +60,23 @@ class ReflexAgent(Agent):
       
     #if we ate a food, add a point, 
     if newPos in oldFood:
+        #print "can capture food!"
         numNewFood = numNewFood - 1
-        foodPoints += len(oldFood)*2*(numOldFood - numNewFood)
+        foodPoints += 1
       
     #find food distances
     else:
-        changeInFoodDistances = [0]* len(oldFood)
+        foodDistances = [0]* len(oldFood)
+        i = 0
         for curFood in oldFood:
             oldD = self.findManhattanDistance(curFood, oldPos)
             newD = self.findManhattanDistance(curFood, newPos) 
-            if oldD > newD:
-                foodPoints+=1
-            elif oldD <= newD :
-                foodPoints-=1
-    print "food points: ", foodPoints
+            foodDistances[i] = newD
+            i = i+1
+        #print "fd:  ",foodDistances
+        #print "min: ",min(foodDistances)
+        foodPoints = 1/min(foodDistances)
+    #print "food points: ", foodPoints
     return foodPoints
 
   def evaluationFunction(self, currentGameState, action):
